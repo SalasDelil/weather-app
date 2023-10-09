@@ -42,12 +42,10 @@ const dateBuilder = (d) => {
 
 const App = () => {
   const [data, setData] = useState({});
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState('Addis Ababa');
   const [unit, setUnit] = useState('imperial');
   const [error, setError] = useState(null);
 
-
-  //error handling invalid city name or network connection
 
   //const apiKey = process.env.REACT_APP_API_KEY
 
@@ -71,11 +69,12 @@ const App = () => {
   };
 
   useEffect(() => {
-    axios.get(`${url}Addis%20Ababa&units=${unit}&appid=${apiKey}`).then((response) => {
+    axios.get(`${url}${city}&units=${unit}&appid=${apiKey}`).then((response) => {
       setData(response.data);
       console.log(response.data);
     })
-  }, [unit]);
+  }, );
+
 
 
   const unitToggler = () => {
@@ -134,9 +133,9 @@ const App = () => {
           <img className='w-1/2 m-auto' src={WeatherIcons} alt='Loading weather data...' />
         ) : (
           <div className='py-6 sm:p-8 md:px-14 flex flex-col w-full lg:w-3/4'>
-            <span className='block md:hidden'>{dateBuilder(new Date())}</span>
-            <div className='flex justify-between items-center'>
-              <div className='flex justify-center font-medium text-lg sm:text-xl md:text-2xl lg:text-3xl'>
+            <span className='flex justify-center items-center md:hidden'>{dateBuilder(new Date())}</span>
+            <div className='flex flex-col space-y-4 sm:flex-row justify-between items-center'>
+              <div className='flex justify-center font-medium text-3xl sm:text-2xl md:text-3xl lg:text-4xl'>
                 <p>{data.name}</p>
                 <p>{data.sys ? <p>, {data.sys.country}</p> : null}</p>
               </div>
@@ -168,7 +167,7 @@ const App = () => {
                 </> : null}
               </div>
             </div>
-            <div className='mt-28'>
+            <div className='mt-20 sm:mt-28'>
               <button className='border rounded-md p-2 shadow-md hover:shadow-lg transition-shadow duration-800' onClick={unitToggler}>Change unit to °{unit === 'imperial' ? 'C' : 'F'}</button>
             </div>
           </div>
