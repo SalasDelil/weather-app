@@ -49,6 +49,7 @@ const App = () => {
 
   //error handling invalid city name or network connection
 
+  //const apiKey = process.env.REACT_APP_API_KEY
 
   const apiKey = 'ed6a14fdf3393a6b9f416bba4ef9c1aa';
   const url = 'https://api.openweathermap.org/data/2.5/weather?q=';
@@ -128,7 +129,7 @@ const App = () => {
             </span>
           </div>
         </div>
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 flex justify-center items-center">{error}</p>}
         {!data ? (
           <img className='w-1/2 m-auto' src={WeatherIcons} alt='Loading weather data...' />
         ) : (
