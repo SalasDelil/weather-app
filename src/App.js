@@ -59,7 +59,6 @@ const App = () => {
         axios.get(`${url}${city}&units=${unit}&appid=${apiKey}`).then((response) => {
           setData(response.data);
           setError(null)
-          console.log(response.data);
         }).catch((error) => {
           setError('City not found or network error')
         });
@@ -89,16 +88,16 @@ const App = () => {
 
   return (
     <div className='p-8 text-white'>
-      <div className='items-center p-4 h-screen rounded-md shadow-md shadow-slate-300 bg-black/10'>
-        <div className='flex justify-between mb-4'>
-          <h2 className='font-semibold text-3xl'>Weather App</h2>
-          {dateBuilder(new Date())}
+      <div className='items-center p-6 h-screen rounded-md shadow-md shadow-slate-300 bg-black/10'>
+        <div className='flex justify-between mb-6'>
+          <h2 className='font-semibold text-2xl sm:text-3xl lg:text-4xl'>Weather App</h2>
+          <span className='hidden md:block'>{dateBuilder(new Date())}</span>
           <a href='https://github.com/SalasDelil/weather-app' target='_blank' rel='noopener noreferrer'>
             <img src={GithubIcon} alt='GitHub Icon' className='h-8 w-8' />
           </a>
         </div>
         <div className='flex justify-center items-center'>
-          <div className='relative w-1/2'>
+          <div className='relative w-full sm:w-3/4 lg:w-1/2'>
             <input
               className="focus:ring-2 focus:ring-white focus:outline-none focus:shadow-lg text-lg leading-6 placeholder-slate-300 bg-transparent rounded-3xl w-full py-2 pl-10 ring-1 ring-slate-200 shadow-md"
               value={city}
@@ -133,32 +132,38 @@ const App = () => {
         {!data ? (
           <img className='w-1/2 m-auto' src={WeatherIcons} alt='Loading weather data...' />
         ) : (
-          <div className='p-8'>
+          <div className='py-6 sm:p-8 md:px-14 flex flex-col w-full lg:w-3/4'>
+            <span className='block md:hidden'>{dateBuilder(new Date())}</span>
             <div className='flex justify-between items-center'>
-              <div className=''>
-                <p className='flex font-medium text-3xl'>{data.name}{data.sys ? <p>, {data.sys.country}</p> : null}</p>
+              <div className='flex justify-center font-medium text-lg sm:text-xl md:text-2xl lg:text-3xl'>
+                <p>{data.name}</p>
+                <p>{data.sys ? <p>, {data.sys.country}</p> : null}</p>
               </div>
-              <div className='text-6xl'>
+              <div className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl'>
                 {data.main ? <h1>{data.main.temp.toFixed()}°{unit === 'imperial' ? 'F' : 'C'}</h1> : null}
               </div>
-              <div className='description'>
-                {data.weather ? <div>
-                  <img src={weatherIcon(`${data.weather[0].icon}.png`)} alt={data.weather[0].main} />
-                  <p className='font-medium text-xl'>{data.weather[0].main}</p>
-                </div> : null}
+              <div className='flex justify-center items-center flex-col space-y-6'>
+                {data.weather ? (
+                  <div>
+                    <img src={weatherIcon(`${data.weather[0].icon}.png`)} alt={data.weather[0].main} className='h-20 sm:h-28 md:h-40' />
+                    <p className='font-medium text-xl'>{data.weather[0].main}</p>
+                  </div>
+                ) : (
+                  null
+                )}
               </div>
             </div>
-            <div className='flex flex-col space-y-4'>
-              <div className='flex items-center space-x-3'>
+            <div className='flex flex-col sm:flex-row sm:space-x-8 space-y-4'>
+              <div className='flex items-center space-x-4'>
                 {data.main ? <>
-                  <img src={Humidity} alt='humidity' className='h-10 w-10' />
-                  <p className='text-xl'>{data.main.humidity}%</p>
+                  <img src={Humidity} alt='humidity' className='h-10 sm:h-12 lg:h-16' />
+                  <p className='text-xl sm:text-3xl'>{data.main.humidity}%</p>
                 </> : null}
               </div>
               <div className='flex items-center space-x-3'>
                 {data.wind ? <>
-                  <img src={Wind} alt='wind blow' className='h-10 w-10' />
-                  <p className='text-xl'>{data.wind.speed.toFixed()}{unit === 'imperial' ? ' mph' : ' m/s'}</p>
+                  <img src={Wind} alt='wind blow' className='h-10 sm:h-12 lg:h-16' />
+                  <p className='text-xl sm:text-3xl'>{data.wind.speed.toFixed()}{unit === 'imperial' ? ' mph' : ' m/s'}</p>
                 </> : null}
               </div>
             </div>

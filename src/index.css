@@ -5,7 +5,7 @@
 body {
   margin: 0;
   scroll-behavior: smooth;
-  background: url('./assets/images/blue-sky-bg1.jpg') no-repeat fixed center center/cover;
+  background: url('./assets/images/blue-sky-bg.jpg') no-repeat fixed center center/cover;
   
   font-family: 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
