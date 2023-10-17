@@ -7,37 +7,37 @@ import Wind from './assets/wind.svg';
 import Humidity from './assets/humidity.svg';
 
 const dateBuilder = (d) => {
-  let months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  let days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  // let months = [
+  //   "January",
+  //   "February",
+  //   "March",
+  //   "April",
+  //   "May",
+  //   "June",
+  //   "July",
+  //   "August",
+  //   "September",
+  //   "October",
+  //   "November",
+  //   "December",
+  // ];
+  // let days = [
+  //   "Sunday",
+  //   "Monday",
+  //   "Tuesday",
+  //   "Wednesday",
+  //   "Thursday",
+  //   "Friday",
+  //   "Saturday",
+  // ];
 
-  let day = days[d.getDay()];
-  let date = d.getDate();
-  let month = months[d.getMonth()];
-  let year = d.getFullYear();
+  // // let day = days[d.getDay()];
+  // // let date = d.getDate();
+  // // let month = months[d.getMonth()];
+  // // let year = d.getFullYear();
   console.log(d)
 
-  return `${day}, ${date} ${month} ${year}`;
+  return `${d}`;
 };
 
 const App = () => {
@@ -47,7 +47,7 @@ const App = () => {
   const [error, setError] = useState(null);
 
 
-  //const apiKey = process.env.REACT_APP_API_KEY
+  // const apiKey = process.env.REACT_APP_API_KEY
 
   const apiKey = 'ed6a14fdf3393a6b9f416bba4ef9c1aa';
   const url = 'https://api.openweathermap.org/data/2.5/weather?q=';
@@ -55,13 +55,14 @@ const App = () => {
   const search = (event) => {
     try {
       if (event.key === 'Enter') {
-        axios.get(`${url}${city}&units=${unit}&appid=${apiKey}`).then((response) => {
-          setData(response.data);
-          setError(null)
-        }).catch((error) => {
-          setError('City not found or network error')
-        });
-        setCity('')
+        axios.get(`${url}${city}&units=${unit}&appid=${apiKey}`)
+          .then((response) => {
+            setData(response.data);
+            setError(null)
+          }).catch((error) => {
+            setError('City not found or network error')
+          });
+        // setCity('')
       }
     } catch (error) {
       console.log('Error fetching weather data: ', error)
@@ -69,17 +70,20 @@ const App = () => {
   };
 
   useEffect(() => {
-    axios.get(`${url}${city}&units=${unit}&appid=${apiKey}`).then((response) => {
-      setData(response.data);
-      console.log(response.data);
-    })
-  }, );
+    axios.get(`${url}${city}&units=${unit}&appid=${apiKey}`)
+      .then((response) => {
+        setData(response.data);
+      }).catch(e => {
+        console.log('----------Error: ', e)
+      })
+  }, [unit]);
 
 
 
   const unitToggler = () => {
     if (unit === 'imperial') {
-      setUnit('metric')
+      setUnit('metric');
+      search();
     } else {
       setUnit('imperial')
     }
@@ -134,17 +138,17 @@ const App = () => {
         ) : (
           <div className='py-6 sm:p-8 md:px-14 flex flex-col w-full lg:w-3/4'>
             <span className='flex justify-center items-center md:hidden'>{dateBuilder(new Date())}</span>
-            <div className='flex flex-col space-y-4 sm:flex-row justify-between items-center'>
+            <div className='flex flex-col space-y-4 space-x-4 sm:flex-row justify-between items-center'>
               <div className='flex justify-center font-medium text-3xl sm:text-2xl md:text-3xl lg:text-4xl'>
                 <p>{data.name}</p>
-                <p>{data.sys ? <p>, {data.sys.country}</p> : null}</p>
+                <p>{data.sys ? <span>, {data.sys.country}</span> : null}</p>
               </div>
               <div className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl'>
                 {data.main ? <h1>{data.main.temp.toFixed()}°{unit === 'imperial' ? 'F' : 'C'}</h1> : null}
               </div>
-              <div className='flex justify-center items-center flex-col space-y-6'>
+              <div className=''>
                 {data.weather ? (
-                  <div>
+                  <div className='flex justify-center items-center flex-col '>
                     <img src={weatherIcon(`${data.weather[0].icon}.png`)} alt={data.weather[0].main} className='h-20 sm:h-28 md:h-40' />
                     <p className='font-medium text-xl'>{data.weather[0].main}</p>
                   </div>
@@ -153,7 +157,7 @@ const App = () => {
                 )}
               </div>
             </div>
-            <div className='flex flex-col sm:flex-row sm:space-x-8 space-y-4'>
+            <div className='flex flex-col sm:flex-row sm:space-x-8 space-y-4 sm:space-y-0'>
               <div className='flex items-center space-x-4'>
                 {data.main ? <>
                   <img src={Humidity} alt='humidity' className='h-10 sm:h-12 lg:h-16' />
